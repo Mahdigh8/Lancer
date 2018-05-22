@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Signup | {{user_type}}{%endblock%}
+{% block content %}
+<div class="col-sm-6 text-center col-sm-offset-6">
+<h2>{{user_type}} Signup</h2>
+{%if not user_staff %}
+<form method="post" action="{% url 'blog:worker_signup' %}">
+{%else%}
+<form method="post" action="{% url 'blog:employer_signup' %}">
+{%endif%}
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Signup" />
+
+</form>
+
+<p><a href="{% url 'blog:login' %}">Login</a></p>
+</div>
+{% endblock %}

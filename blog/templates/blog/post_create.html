@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Post Create{%endblock%}
+{% block content %}
+<div class="col-sm-6 text-center col-sm-offset-6">
+<h2>Post Create Form</h2>
+<form method="post" action="{% url 'blog:post_create' %}">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Save" />
+</form>
+</div>
+{% endblock %}
