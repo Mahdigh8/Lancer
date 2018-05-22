@@ -20,4 +20,4 @@ http://localhost:8000/blog/
 
 Note: Only the super user can go to http://localhost:8000/admin
 
-Note: after creating post in site, super user should confirm that post otherwise the post will not show in the site
+Note: after creating post in site, super user should confirm that post in http://localhost:8000/admin otherwise the post will not show in the site
