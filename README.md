@@ -1,7 +1,9 @@
 # Lancer
-for running this project on your computer follow these instructions:
+For running this project on your computer follow these instructions:
 
-first download the project and open terminal in the project folder then run the commands below in terminal
+1. First download the project and open terminal in the project folder
+
+2. Run the commands below in terminal:
 
 $ virtualenv venv --python=python3
 
@@ -15,9 +17,9 @@ $ python3 manage.py createsuperuser
 
 $ python3 manage.py runserver
 
-then go to this url :
+3. Go to this url :
 http://localhost:8000/blog/
 
-Note: Only the super user can go to http://localhost:8000/admin
+Note: Admin page url is  http://localhost:8000/admin and only super user can login to this page.
 
-Note: after creating post in site, super user should confirm that post in http://localhost:8000/admin otherwise the post will not show in the site
+Note: After creating post by employers, super user should confirm that post in admin page otherwise the post will not show in the site.
