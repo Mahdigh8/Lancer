@@ -9,7 +9,7 @@ from .utils import unique_slug_generator
 from django.contrib.auth.decorators import login_required
 from .decorators import worker_required, employer_required
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, TemplateView
-from .forms import WorkerCreateForm, EmployerCreateForm, CommentCreateForm, PostCreateForm
+from .forms import WorkerCreateForm, EmployerCreateForm, CommentCreateForm
 from .models import Worker, Post, Comment
 # Create your views here.
 

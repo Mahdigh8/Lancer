@@ -116,11 +116,6 @@ class CommentCreateForm(forms.ModelForm):
 		fields = ['body',]
 		
 
-class PostCreateForm(forms.ModelForm):
-	class Meta:
-		model = Post
-		fields = ['title','body',]
-
     # def save(self, commit=True):
     #     post = super(EmployerCreateForm, self).save(commit=False)
     #     user.set_password(self.cleaned_data["password1"])

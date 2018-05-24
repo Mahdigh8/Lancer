@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Login{%endblock%}
+
+{%block head%}
+    <link href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.1/examples/sign-in/signin.css" rel="stylesheet">
+{{block.super}}
+{%endblock%}
+
 {% block content %}
 
 {% if form.errors %}
@@ -15,23 +23,20 @@
     {% endif %}
 {% endif %}
 
-
-<form method="post" action="{% url 'blog:login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
-
+    <form class="form-signin" method="post" action="{% url 'blog:login' %}">
+    {% csrf_token %}
+      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <div class="fieldWrapper">
+      <label for="id_username" class="sr-only">Username</label>
+      <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" required autofocus>
+      </div>
+      <div class="fieldWrapper">
+        <label for="id_password" class="sr-only">Password</label>
+          <input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <input type="hidden" name="next" value="{{ next }}" />
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
 {% endblock %}
