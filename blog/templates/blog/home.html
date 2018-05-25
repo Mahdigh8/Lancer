@@ -8,6 +8,8 @@
         <a href="{%url 'blog:postlist'%}">Posts</a>
         {%if is_staff%}
             <a href="{%url 'blog:post_create'%}">Add Post</a>
+        {%else%}
+            <a href="{{request.user.worker.get_absolute_url}}">Profile</a>
         {%endif%}
     {%else%}
     <a href="{%url 'login'%}">Login</a>

@@ -18,12 +18,9 @@ class Worker(models.Model):
 	def __str__(self):
 		return self.user.username
 
-# def post_save_user_receiver(sender, instance, created, *args, **kwargs):
-#     if created and not instance.is_staff:
-#         worker, is_created = Worker.objects.get_or_create(user=instance)
+	def get_absolute_url(self):
+		return reverse('blog:profile', kwargs={'pk':self.user.id})
 
-
-# post_save.connect(post_save_user_receiver, sender=User)
 
 
 class PublishedManager(models.Manager):

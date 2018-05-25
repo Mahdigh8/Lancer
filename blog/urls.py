@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (HomePageView, WorkerCreateView, EmployerCreateView,
 					 post_detail, PostCreateView, HomePageView,
-					 PostListView,
+					 PostListView, ProfileUpdateView, PostEditView
 					)
 
 app_name = 'blog'
@@ -13,5 +13,7 @@ urlpatterns = [
 	path('signup/employer/', EmployerCreateView.as_view(), name="employer_signup"),
 	path('postcreate/', PostCreateView.as_view(), name="post_create"),
 	path('postlist/', PostListView.as_view(), name="postlist"),
+	path('profile/<str:pk>/', ProfileUpdateView.as_view(), name="profile"),
+	path('<str:year>/<str:slug>/edit/', PostEditView.as_view(), name="post_edit"),
 	path('<str:year>/<str:slug>/', post_detail, name="post_detail"),
 ]

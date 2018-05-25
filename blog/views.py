@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from .utils import unique_slug_generator
 from django.contrib.auth.decorators import login_required
 from .decorators import worker_required, employer_required
@@ -135,3 +136,17 @@ def post_detail(request, year, slug):
 				)
 	else:
 		return render(request, 'blog/user_not_allowed.html', {})
+
+
+@method_decorator([login_required, worker_required], name='dispatch')
+class ProfileUpdateView(UpdateView):
+	model = Worker
+	fields = ['tags',]
+	template_name = 'blog/profile_view.html'
+
+    
+@method_decorator([login_required, employer_required], name='dispatch')
+class PostEditView(UpdateView):
+	model = Post
+	fields = ['title','body','tags',]
+	template_name = 'blog/post_edit.html'
