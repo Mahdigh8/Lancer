@@ -1,7 +1,11 @@
 {% extends 'base.html'%}
 {% block title %}My Blog{% endblock %}
 {% block content %}
+	{%if is_staff%}
 	<h1>Employer Posts</h1>
+	{%else%}
+	<h1>Worker Posts</h1>
+	{%endif%}
 		{% for post in posts %}
 			<a href="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
 			<p class="tags">Tags: {{ post.tags.all|join:", " }}</p>

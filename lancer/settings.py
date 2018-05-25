@@ -115,10 +115,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_URL = '/blog/login'
-LOGIN_REDIRECT_URL = '/blog'
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_REDIRECT_URL = '/blog'
+LOGOUT_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
