@@ -4,7 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from taggit.models import Tag
 from .utils import unique_slug_generator
+from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from .decorators import worker_required, employer_required
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, TemplateView
@@ -64,18 +66,31 @@ class PostListView(ListView):
 	template_name = 'blog/postlist.html'
 
 	def get_queryset(self):
+		tag_slug = None
+		if 'tag_slug' in self.kwargs:
+			tag_slug = self.kwargs['tag_slug']
 		user_ = self.request.user
 		if user_.is_staff:
-			return Post.published.filter(user=user_)
+			posts = Post.published.filter(user=user_)
 		else:
 			worker = Worker.objects.filter(user=user_).first()
 			tags_obj = worker.tags.all()
 			tags = []
 			for i in tags_obj:
 				tags.append(i)
-			return Post.published.filter(tags__name__in=tags).distinct()
+			posts = Post.published.filter(tags__name__in=tags).distinct()
+		if tag_slug:
+			tag = get_object_or_404(Tag, slug=tag_slug)
+			posts = posts.filter(tags__in=[tag])
+
+		return posts
+
 
 	def get_context_data(self, **kwargs):
+		tag = None
+		if 'tag_slug' in self.kwargs:
+			tag = self.kwargs['tag_slug']
+		kwargs['tag'] = tag
 		kwargs['is_staff'] = self.request.user.is_staff
 		return super().get_context_data(**kwargs)
 
@@ -100,7 +115,8 @@ class PostCreateView(CreateView):
 def post_detail(request, year, slug):
 	post = get_object_or_404(Post, slug=slug, status='published', publish__year=year)
 	if request.user.is_staff:
-		is_staff = True
+		is_staff = True 
+		# post_tags_ids = request.user.post.tags.values_list('id', flat=True)
 	else:
 		is_staff = False
 
@@ -127,12 +143,25 @@ def post_detail(request, year, slug):
 				new_comment.save()
 		else:
 			comment_form = CommentCreateForm()
+
+		# List of similar posts
+		post_tags_ids = post.tags.values_list('id', flat=True)
+		similar_posts = Post.published.filter(tags__in=post_tags_ids)\
+		.exclude(id=post.id)
+		if request.user.is_staff:
+			similar_posts = similar_posts.filter(user=request.user)
+		else:
+			similar_posts = similar_posts.filter(tags__in=request.user.worker.tags.all())
+		similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+		.order_by('-same_tags','-publish')[:4]
+		
 		return render(
 				request,
 				'blog/post_detail.html',
 				{'post': post,'comments': comments,
 				'comment_form': comment_form,'is_staff':is_staff,
-				'is_allowed':is_allowed}
+				'is_allowed':is_allowed,
+				'similar_posts': similar_posts}
 				)
 	else:
 		return render(request, 'blog/user_not_allowed.html', {})
